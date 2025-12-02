@@ -1,0 +1,11 @@
+package com.info.crudlospolloss.repository;
+
+import com.info.crudlospolloss.model.Pedido;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
+
+    List<Pedido> findByStatusIn(List<String> status);
+    List<Pedido> findByStatus(String status);
+}
