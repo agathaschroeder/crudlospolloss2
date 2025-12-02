@@ -1,0 +1,57 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospolloss.controller;
+
+import com.info.crudlospolloss.model.Comanda;
+import com.info.crudlospolloss.repository.ComandaRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ *
+ * @author info20242
+ */
+@Controller
+@RequestMapping({"/comanda"})
+public class ComandaController {
+
+    @Autowired
+    ComandaRepository cr;
+
+    List<Comanda> listaComanda;
+
+    @GetMapping("/")
+    public String listarComanda(Model model) {
+        listaComanda = cr.findAll();
+        model.addAttribute("listacomanda", listaComanda);
+        return "paginas/lista-cardapio";
+    }
+
+    @GetMapping("/edita")
+    public String editaComanda(@RequestParam("id") Integer id, Model model) {
+        Optional<Comanda> comanda = cr.findById(id);
+        if (comanda.isPresent()) {
+            model.addAttribute("comanda", comanda.get());
+            return "paginas/form-comanda";
+        }
+        return "/comanda/";
+    }
+
+    @GetMapping("/exclui")
+    public String excluiComanda(@RequestParam("id") Integer id) {
+        cr.deleteById(id);
+        return "redirect:/comanda/";
+    }
+
+    @PostMapping("/salvar")
+    public String salvaComanda(@ModelAttribute("comanda") Comanda comanda) {
+        cr.save(comanda);
+        return "redirect:/comanda/";
+    }
+}
