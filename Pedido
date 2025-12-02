@@ -1,0 +1,123 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospolloss.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Component;
+/**
+ *
+ * @author info20242
+ */
+@Component
+@Entity
+public class Pedido {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
+    private double preco;
+    private Integer id_comanda;
+    private Integer mesa;
+    private String status;
+    private String id_pratos;
+
+
+    @ManyToMany
+    @JoinTable(
+        name = "pedido_pratos",
+        joinColumns = @JoinColumn(name = "pedido_id"),
+        inverseJoinColumns = @JoinColumn(name = "prato_id")
+    )
+    private List<Prato> pratos = new ArrayList<>();
+
+    public void adicionarPrato(Prato prato) {
+        pratos.add(prato);
+    }
+
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the id_prato
+     */
+    
+
+    /**
+     * @return the preco
+     */
+    public double getPreco() {
+        return preco;
+    }
+
+    /**
+     * @param preco the preco to set
+     */
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    /**
+     * @return the id_comanda
+     */
+    public Integer getId_comanda() {
+        return id_comanda;
+    }
+
+    /**
+     * @param id_comanda the id_comanda to set
+     */
+    public void setId_comanda(Integer id_comanda) {
+        this.id_comanda = id_comanda;
+    }
+
+    /**
+     * @return the mesa
+     */
+    public Integer getMesa() {
+        return mesa;
+    }
+
+    /**
+     * @param mesa the mesa to set
+     */
+    public void setMesa(Integer mesa) {
+        this.mesa = mesa;
+    }
+    
+    public String getStatus() {
+    return status;
+}
+
+public void setStatus(String status) {
+    this.status = status;
+}
+
+public String getId_pratos() {
+    return id_pratos;
+}
+
+public void setId_pratos(String id_pratos) {
+    this.id_pratos = id_pratos;
+}
+}
