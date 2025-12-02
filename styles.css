@@ -1,0 +1,201 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+.botoes-header{
+	display: flex;
+    justify-content: center; 
+    gap: 10px;
+	
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1 {
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: #333;
+    margin-top: 2rem;
+}
+hr{
+    width: 100%;
+    height: 1px;
+    border-top: 2px solid black;
+    background-color: #ffffff;
+    margin-top: 1rem
+    
+}
+.cardapio-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.prato{
+    flex: 1 1 300px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.funcionario{
+    flex: 1 1 300px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+label {
+    font-weight: bold;
+}
+
+input, select, button {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.pedidos-lista {
+    list-style: none;
+}
+
+.pedidos-lista li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resumo, .dashboard {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+    
+    nav ul li {
+        margin: 0.5rem 0;
+    }
+    
+    .cardapio-container {
+        flex-direction: column;
+    }
+    
+    form {
+        gap: 0.5rem;
+    }
+    
+    .pedidos-lista li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+}
+/* Mesmo CSS anterior, com pequenas adições para login */
+#login {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#login form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Responsividade permanece igual */
