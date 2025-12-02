@@ -1,0 +1,65 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospolloss.controller;
+
+/**
+ *
+ * @author info20242
+ */
+import com.info.crudlospolloss.model.Funcionario;
+import com.info.crudlospolloss.repository.FuncionarioRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping({"/funcionario"})
+public class FuncionarioController {
+    
+    @Autowired
+    FuncionarioRepository fr;
+    
+    List<Funcionario> listaFuncionario;
+    
+    @GetMapping("/")
+    public String listarFuncionario(Model model){
+        listaFuncionario = fr.findAll();
+        model.addAttribute("listafuncionario", listaFuncionario);
+        return "paginas/lista-funcionario";
+    }
+    
+    @GetMapping("/novo")
+    public String novoFuncionario(Model model){
+        Funcionario funcionario = new Funcionario();
+        model.addAttribute("funcionario", funcionario);
+        return "paginas/form-funcionario";
+    }
+    
+    @GetMapping("/edita")
+    public String editaFuncionario(@RequestParam("id") Integer id, Model model){
+        Optional<Funcionario> funcionario = fr.findById(id);
+        if(funcionario.isPresent()){
+            model.addAttribute("funcionario", funcionario.get());
+            return "paginas/form-funcionario/";
+        }
+        return "/funcionario/";
+    }
+    
+    @GetMapping("/exclui")
+    public String excluiFuncionario(@RequestParam("id") Integer id){
+        fr.deleteById(id);
+        
+        return "redirect:/funcionario/";
+    }
+    
+    @PostMapping("/salvar")
+    public String salvaFuncionario(@ModelAttribute("funcionario") Funcionario funcionario){
+        fr.save(funcionario);
+        return "redirect:/funcionario/";
+    }
+}
