@@ -1,0 +1,43 @@
+package com.info.crudlospolloss.controller;
+
+import com.info.crudlospolloss.model.Pedido;
+import com.info.crudlospolloss.repository.PedidoRepository;
+import java.util.Arrays;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+
+@Controller
+public class CozinhaController {
+
+    private final PedidoRepository pedidoRepository;
+
+    public CozinhaController(PedidoRepository pedidoRepository) {
+        this.pedidoRepository = pedidoRepository;
+    }
+
+    @GetMapping("/cozinha")
+    public String cozinha(Model model) {
+
+        List<Pedido> pedidos = pedidoRepository.findByStatusIn(
+            Arrays.asList("AGUARDANDO", "NOVO", "ENVIADO_COZINHA")
+        );
+
+        model.addAttribute("pedidos", pedidos);
+        return "cozinha";
+    }
+}
+/*
+    @GetMapping("/cozinha")
+    public String cozinha(Model model) {
+
+        // Buscar pedidos que ainda precisam ser preparados
+        List<Pedido> pedidos = pedidoRepository.findByStatus("AGUARDANDO");
+
+        model.addAttribute("pedidos", pedidos);
+
+        return "cozinha"; // carrega cozinha.html
+    }
+*/
