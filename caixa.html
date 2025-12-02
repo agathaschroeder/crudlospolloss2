@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caixa - Sistema de Restaurante</title>
+ <link rel="stylesheet" href="styles.css">
+<style>
+
+     .login {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: #0066ff;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        .login:hover {
+            background: #0051cc;
+        }
+    .botoes-header{
+	display: flex;
+    justify-content: center; 
+    gap: 10px;
+    
+}
+.btn-h{
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+	background-color: #333;
+    color: #fff;
+    cursor: pointer;
+	margin-left: 1rem;
+}
+.btn-h:hover {
+    background-color: #555;
+}
+a:hover {
+    background-color: #555;
+}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial;background:#f4f4f4;padding:1.5rem}
+    header{background:#333;color:#fff;padding:1rem;text-align:center;border-radius:8px;margin-bottom:1rem}
+
+    .caixa{max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 350px;gap:1rem}
+    .box{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+
+    h2{margin-bottom:.7rem}
+
+    ul{list-style:none}
+    li{padding:.4rem 0;border-bottom:1px dashed #ddd;display:flex;justify-content:space-between}
+
+    .totais, .resumo div{
+        display:flex;justify-content:space-between;margin:.4rem 0;font-size:1.1rem;font-weight:bold
+    }
+
+    input,select{padding:.45rem;border:1px solid #ccc;border-radius:6px}
+    .btn{background:#333;color:#fff;border:0;padding:.5rem .7rem;border-radius:6px;cursor:pointer}
+    .ghost{background:#fff;border:1px solid #aaa;color:#333}
+    .warn{color:#c00;font-size:.9rem;margin-top:.5rem}
+    .success{color:green;font-weight:bold}
+    .danger{color:#c00;font-weight:bold}
+
+    @media(max-width:800px){.caixa{grid-template-columns:1fr}}
+</style>
+		
+</head>
+<body>
+
+    <header>
+        <h1>Sistema de Restaurante</h1>
+        <h2>Caixa</h2>
+    
+        
+    <a href="painel.html"><button class="login">Login</button></a>
+        <div class="botoes-header">
+       <a href="cardapiomesa.html"> <button>Cardápio</button></a>
+       <a href="pedidomesa.html"><button>Fazer Pedido</button></a> 
+       <a href="caixa.html"><button>Caixa</button></a>
+    </div>
+    </header>
+
+<div class="caixa">
+
+    <!-- ITENS -->
+    <div class="box">
+        <h2>Itens</h2>
+
+        <ul id="lista-itens">
+            <li><span>1x X-Burger</span> <span>R$ 18,00</span></li>
+            <li><span>2x Refrigerante</span> <span>R$ 10,00</span></li>
+            <li><span>1x Sobremesa</span> <span>R$ 6,50</span></li>
+        </ul>
+
+        <div class="totais">
+            <span>Subtotal</span> <span id="subtotal">R$ 34,50</span>
+        </div>
+
+        <label style="margin-top:10px;display:flex;gap:.5rem;align-items:center;">
+            <input type="checkbox" id="gorjetaCheck">
+            Incluir gorjeta 10% do garçom
+        </label>
+
+        <div class="totais">
+            <span>Total com gorjeta</span> <span id="totalFinal">R$ 34,50</span>
+        </div>
+    </div>
+
+    <!-- PAGAMENTOS -->
+    <div class="box">
+        <h2>Pagamentos</h2>
+
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
+            <select id="metodo">
+                <option value="pix">PIX</option>
+                <option value="credito">Cartão de Crédito</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="dinheiro">Dinheiro</option>
+            </select>
+
+            <input id="valor" type="number" step="0.01" min="0" placeholder="Valor">
+            
+            <input id="parcelas" type="number" min="1" max="36" value="1" style="width:70px;display:none">
+            
+            <button class="btn" id="addPag">Adicionar</button>
+        </div>
+
+        <ul id="listaPag"></ul>
+
+        <div class="resumo">
+            <div><span>Total</span><span id="totalResumo">R$ 34,50</span></div>
+            <div><span>Pago</span><span id="pago">R$ 0,00</span></div>
+            <div><span>Restante</span><span id="restante">R$ 34,50</span></div>
+            <div><span>Troco</span><span id="troco">R$ 0,00</span></div>
+        </div>
+
+        <button class="btn" id="finalizar" style="margin-top:.5rem">Finalizar Venda</button>
+
+        <p id="msg" class="warn" style="display:none"></p>
+        <p id="finalMsg" style="margin-top:10px;font-weight:bold"></p>
+    </div>
+
+</div>
+
+<script>
+
+    
+function money(v){return "R$ " + v.toFixed(2).replace('.',',')}
+function num(v){return Number(v) || 0}
+
+let subtotal = 34.50
+let totalComGorjeta = subtotal
+let pagamentos = []
+
+const elSubtotal = document.getElementById("subtotal")
+const elTotalFinal = document.getElementById("totalFinal")
+const elTotalResumo = document.getElementById("totalResumo")
+const elPago = document.getElementById("pago")
+const elRestante = document.getElementById("restante")
+const elTroco = document.getElementById("troco")
+const elParcelas = document.getElementById("parcelas")
+const msg = document.getElementById("msg")
+const finalMsg = document.getElementById("finalMsg")
+
+// ---- GORJETA 10% ----
+document.getElementById("gorjetaCheck").addEventListener("change", ()=>{
+    if(this.checked);
+})
+
+document.getElementById("gorjetaCheck").addEventListener("change", e=>{
+    const checked = e.target.checked
+    totalComGorjeta = checked ? subtotal * 1.10 : subtotal
+    atualiza()
+})
+
+// ---- mostrar campo parcelas SOMENTE se for crédito ----
+document.getElementById("metodo").addEventListener("change", e=>{
+    elParcelas.style.display = (e.target.value === "credito") ? "block" : "none"
+})
+
+// ---- atualizar valores ----
+function atualiza(){
+    elSubtotal.textContent = money(subtotal)
+    elTotalFinal.textContent = money(totalComGorjeta)
+    elTotalResumo.textContent = money(totalComGorjeta)
+
+    let pago = pagamentos.reduce((s,p)=> s + p.valor, 0)
+    let restante = Math.max(0, totalComGorjeta - pago)
+    let troco = Math.max(0, pago - totalComGorjeta)
+
+    elPago.textContent = money(pago)
+    elRestante.textContent = money(restante)
+    elTroco.textContent = money(troco)
+}
+
+// ---- adicionar pagamento ----
+document.getElementById("addPag").addEventListener("click", ()=>{
+    msg.style.display = "none"
+    finalMsg.textContent = ""
+
+    let metodo = document.getElementById("metodo").value
+    let valor = num(document.getElementById("valor").value)
+    let parcelas = num(document.getElementById("parcelas").value)
+
+    if(valor <= 0){
+        msg.textContent = "Insira um valor válido."
+        msg.style.display = "block"
+        return
+    }
+
+    // overpay permitido apenas em dinheiro
+    const pagoAtual = pagamentos.reduce((s,p)=> s + p.valor, 0)
+    const restante = totalComGorjeta - pagoAtual
+
+    if(metodo !== "dinheiro" && valor > restante){
+        msg.textContent = "Somente pagamentos em dinheiro podem ultrapassar o valor restante."
+        msg.style.display = "block"
+        return
+    }
+
+    pagamentos.push({metodo, valor, parcelas})
+    renderPag()
+    atualiza()
+})
+
+function renderPag(){
+    const lista = document.getElementById("listaPag")
+    lista.innerHTML = ""
+
+    pagamentos.forEach((p, i)=>{
+        const li = document.createElement("li")
+        li.innerHTML = `
+            <span>${nomeMetodo(p.metodo)}${p.metodo==="credito" && p.parcelas>1 ? ` (${p.parcelas}x)` : ""}</span>
+            <span>${money(p.valor)} <button class="ghost" onclick="removePag(${i})">X</button></span>
+        `
+        lista.appendChild(li)
+    })
+}
+
+function nomeMetodo(m){
+    return {
+        pix:"PIX",
+        credito:"Cartão Crédito",
+        alimentacao:"Alimentação",
+        dinheiro:"Dinheiro"
+    }[m]
+}
+
+function removePag(i){
+    pagamentos.splice(i,1)
+    renderPag()
+    atualiza()
+}
+
+// ---- finalizar venda ----
+document.getElementById("finalizar").addEventListener("click", ()=>{
+    let pago = pagamentos.reduce((s,p)=> s + p.valor, 0)
+
+    if(pago < totalComGorjeta){
+        finalMsg.className="danger"
+        finalMsg.textContent = "Pagamento incompleto!"
+        return
+    }
+
+    // se sobrou dinheiro porém NÃO tem dinheiro → não pode dar troco
+    let troco = pago - totalComGorjeta
+    let temDinheiro = pagamentos.some(p=> p.metodo==="dinheiro")
+
+    if(troco > 0 && !temDinheiro){
+        finalMsg.className="danger"
+        finalMsg.textContent="Há troco, mas ninguém pagou em dinheiro!"
+        return
+    }
+
+    finalMsg.className="success"
+    finalMsg.textContent = "Venda finalizada com sucesso!"
+})
+
+// inicializa
+atualiza()
+</script>
+</body>
+</html>
