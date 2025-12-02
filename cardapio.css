@@ -1,0 +1,53 @@
+.heading {
+    text-align: center;
+    font-size:32px;
+    padding: 0px;
+    margin: 80px 0px 0px 0px;
+}
+.heading span {
+    color: #F9A825;
+}
+.subhead {
+    text-align: center;
+    font-size: 18px;
+    padding: 0px;
+    margin: 5px 0px 40px 0px;
+}
+.products {
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	display: grid;
+	gap: 15px;
+	margin:0px 0px 80px 0px;
+}
+.pro {
+    border: 1px solid #fc9800;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 5px 20px 5px;
+	text-align:center
+}
+.pro h6 {
+    font-size: 20px;
+    margin: 20px 0px 5px 0px;
+}
+.pro b {
+    font-size: 26px;
+    margin-right: 5px;
+    color: red;
+}
+.pro strike {
+    font-size:16px;
+}
+.pro a {
+    text-align: center;
+    background: #fc9800;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-size: 16px;
+	width:200px;
+	margin:0px auto;
+    margin-top: 20px;
+}
