@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Restaurante</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Painel de Controle</h1>
+         <nav id="nav-privada">
+            <ul>
+                <li><a href="pedidofuncio.html">Pedidos</a></li>
+                <li><a href="cozinha.html">Cozinha</a></li>
+                <li><a href="cardapiofuncio.html">Cadapio</a></li>
+                <li id="nav-gerencia" style="display: none;"><a href="#gerencia">Gerência</a></li>
+                <li><a href="inicio.html" id="logout">Logout</a></li>  
+            </ul>
+        </nav>
+    </header>
+
+    <section id="cozinha">
+        <h1>Cozinha</h1>
+        <p>Pedidos em fila. Ordem de chegada.</p>
+
+        <ul class="pedidos-lista">
+    <th:block th:each="pedido : ${pedidos}">
+        <li>
+            <strong>Mesa:</strong> <span th:text="${pedido.mesa}"></span><br>
+            <strong>Itens:</strong>
+            <ul>
+                <li th:each="p : ${pedido.pratos}" th:text="${p.nome}"></li>
+            </ul>
+
+            <!-- BOTÃO FINALIZAR -->
+            <form th:action="@{'/pedido/' + ${pedido.id} + '/finalizar'}" method="post">
+                <button type="submit" class="botao-finalizar">Finalizar</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
+    </section>
+</body>
+</html>
