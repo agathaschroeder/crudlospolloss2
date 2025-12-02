@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Restaurante</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Login para Funcionários/Gerência</h1>
+        <nav>
+            <ul>
+                <li><a href="cardapiomesa.html">Voltar ao Cardápio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="login">
+            <form id="form-login">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" placeholder="Digite seu usuário" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" placeholder="Digite sua senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p id="login-error" style="color: red; display: none;">Credenciais inválidas!</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Restaurante.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
