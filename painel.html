@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Restaurante</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Painel de Controle</h1>
+        <nav id="nav-privada">
+            <ul>
+                <li><a href="pedido.html">Pedidos</a></li>
+                <li><a href="cozinha.html">Cozinha</a></li>
+                <li><a href="caixa.html">Caixa</a></li>
+                <li id="nav-gerencia" style="display: none;"><a href="#gerencia">Gerência</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="pedidos">
+            <h1>Pedidos (Garçons)</h1>
+            <p>Anotar pedidos na comanda. Direcionado para a cozinha.</p>
+            <form id="form-pedidos">
+                <label for="mesa-ped">Mesa:</label>
+                <input type="number" id="mesa-ped" placeholder="Número da mesa">
+                <label for="prato-ped">Prato:</label>
+                <select id="prato-ped">
+                    <!-- Opções carregadas -->
+                </select>
+                <button type="submit">Enviar Pedido</button>
+            </form>
+        </section>
+
+        <section id="cozinha">
+            <h1>Cozinha</h1>
+            <p>Pedidos em fila. Ordem de chegada.</p>
+            <ul class="pedidos-lista">
+                <!-- Pedidos carregados dinamicamente -->
+            </ul>
+        </section>
+
+        <section id="caixa">
+            <h1>Caixa</h1>
+            <p>Fechar conta e pagamentos.</p>
+            <form id="form-caixa">
+                <label for="comanda">Comanda:</label>
+                <input type="number" id="comanda" placeholder="Número da comanda">
+                <label for="pagamento">Forma de Pagamento:</label>
+                <select id="pagamento">
+                    <option>PIX</option>
+                    <option>Cartão</option>
+                    <option>Dinheiro</option>
+                    <option>Ticket Alimentação</option>
+                </select>
+                <label for="gorjeta">Gorjeta 10%?</label>
+                <input type="checkbox" id="gorjeta">
+                <button type="submit">Finalizar Pagamento</button>
+            </form>
+            <div class="resumo">
+                <h3>Resumo do Dia</h3>
+                <p>Total PIX: R$ 0,00</p>
+                <p>Total Cartão: R$ 0,00</p>
+                <p>Total Dinheiro: R$ 0,00</p>
+                <p>Total Ticket: R$ 0,00</p>
+                <p>Taxa de Serviço: R$ 0,00</p>
+            </div>
+        </section>
+
+        <section id="gerencia" style="display: none;">
+            <h1>Gerência</h1>
+            <h2>cardapio</h2>
+            <p>Cadastrar/Eliminar itens do cardápio. Visualizar módulos.</p>
+            <form id="form-gerencia">
+                <label for="novo-prato">Novo Prato:</label>
+                <input type="text" id="novo-prato" placeholder="Nome do prato">
+                <label for="preco">Preço:</label>
+                <input type="number" id="preco" placeholder="Preço">
+                <button type="submit">Adicionar</button>
+            </form>
+            <hr>
+            <h2>Cadastrar/Eliminar funcionarios.</h2>
+            <form id="form-gerencia">
+                <label for="novo-funcionario">Novo funcionario:</label>
+                <input type="text" id="novo-funcionario" placeholder="Nome do funcionario">
+                <label for="cpf">Cpf:</label>
+                <input type="number" id="Cpf" placeholder="cpf">
+                <button type="submit">Adicionar</button>
+            </form>
+            <div class="dashboard">
+                <h3>Visão Geral</h3>
+                <p>Pedidos Ativos: 5</p>
+                <p>Mesas Ocupadas: 10</p>
+                <p>Arrecadação Hoje: R$ 1500,00</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Restaurante.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
