@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Restaurante</title>
+    <link rel="stylesheet" href="styles.css">
+     <link rel="stylesheet" href="pediso.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Restaurante</h1>
+        <a href="painel.html"><button class="login">Login</button></a>
+        <div class="botoes-header">
+       <a href="cardapiomesa.html"> <button>Cardápio</button></a>
+       <a href="pedidomesa.html"><button>Fazer Pedido</button></a> 
+       <a href="caixa.html"><button>Caixa</button></a>
+    </div>
+    </header>
+
+    <main>
+        <section id="cardapio">
+            <h2>Cardápio Eletrônico</h2>
+            <p>Escolha seus pratos. (Acesso público)</p>
+            <div class="lista-pratos">
+        <div th:each="p : ${pratos}">
+        <p>
+            <b th:text="${p.prato}"></b> – 
+            R$ <span th:text="${p.preco}"></span>
+
+            <a th:href="@{/pedido/adicionar(idPrato=${p.id}, idPedido=${pedido.id})}">
+                Adicionar
+            </a>
+        </p>
+    </div>
+</div>
+
+<hr>
+
+<h2>Itens adicionados</h2>
+
+<ul>
+    <li th:each="id : ${#strings.split(pedido.id_pratos, ',')}">
+        <span th:text="${#numbers.formatInteger(id)}"></span> -
+        <span th:text="${#lists.find(pratos, p -> p.id == id).prato}"></span>
+    </li>
+</ul>
+
+<hr>
+
+<h2>Finalizar Pedido</h2>
+
+<form action="/pedido/finalizar" method="post">
+    <input type="hidden" name="id" th:value="${pedido.id}">
+
+    <label>Mesa:</label>
+    <input type="number" name="mesa" required>
+
+    <button type="submit">Enviar Pedido</button>
+</form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Restaurante. <a href="login.html">Acesso Funcionários</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+    <style>
+    .login {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: #0066ff;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        .login:hover {
+            background: #0051cc;
+        }
+  </style>
+</body>
+</html>
