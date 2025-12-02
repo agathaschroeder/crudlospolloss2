@@ -1,0 +1,64 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospollos.controller;
+
+/**
+ *
+ * @author info20242
+ */
+import com.info.crudlospolloss.model.Prato;
+import com.info.crudlospolloss.repository.PratoRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping({"/prato"})
+public class PratoController {
+
+    @Autowired
+    PratoRepository pr;
+
+    List<Prato> listaPrato;
+
+    @GetMapping("/")
+    public String listarPrato(Model model) {
+        listaPrato = pr.findAll();
+        model.addAttribute("listaprato", listaPrato);
+        return "paginas/lista-prato";
+    }
+
+    @GetMapping("/novo")
+    public String novoPrato(Model model) {
+        Prato prato = new Prato();
+        model.addAttribute("prato", prato);
+        return "paginas/form-prato";
+    }
+
+    @GetMapping("/edita")
+    public String editaPrato(@RequestParam("id") Integer id, Model model) {
+        Optional<Prato> prato = pr.findById(id);
+        if (prato.isPresent()) {
+            model.addAttribute("prato", prato.get());
+            return "paginas/form-prato";
+        }
+        return "/prato/";
+    }
+
+    @GetMapping("/exclui")
+    public String excluiPrato(@RequestParam("id") Integer id) {
+        pr.deleteById(id);
+        return "redirect:/prato/";
+    }
+
+    @PostMapping("/salvar")
+    public String salvaPrato(@ModelAttribute("prato") Prato prato) {
+        pr.save(prato);
+        return "redirect:/prato/";
+    }
+}
