@@ -1,0 +1,133 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospolloss.controller;
+
+/**
+ *
+ * @author info20242
+ */
+import com.info.crudlospolloss.model.Pedido;
+import com.info.crudlospolloss.model.Prato;
+import com.info.crudlospolloss.repository.PedidoRepository;
+import com.info.crudlospolloss.repository.PratoRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping({"/pedido"})
+public class PedidoController {
+
+    @Autowired
+    PedidoRepository pr;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private PratoRepository pratoRepository;
+    List<Pedido> listaPedido;
+
+    @GetMapping("/")
+    public String listarPedido(Model model) {
+        listaPedido = pr.findAll();
+        model.addAttribute("listapedido", listaPedido);
+        return "templeates/pedido";
+    }
+
+    @GetMapping("/novo")
+    public String novoPedido(Model model) {
+        Pedido pedido = new Pedido();
+        pedido.setStatus("NOVO");
+        pedidoRepository.save(pedido); // SALVA PARA GERAR ID
+        model.addAttribute("pedido", pedido);
+        model.addAttribute("pratos", pratoRepository.findAll());
+        return "paginas/pedidomesa";
+    }
+
+    @GetMapping("/adicionar")
+    public String adicionarPrato(
+            @RequestParam Integer idPrato,
+            @RequestParam Integer idPedido,
+            Model model) {
+
+        Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow();
+        Prato prato = pratoRepository.findById(idPrato).orElseThrow();
+
+        pedido.adicionarPrato(prato);
+        pedidoRepository.save(pedido);
+
+        model.addAttribute("pedido", pedido);
+        model.addAttribute("pratos", pratoRepository.findAll());
+
+        return "paginas/pedidomesa";
+    }
+
+    // 3) finalizar pedido e enviar para cozinha
+    @PostMapping("/finalizar")
+    public String finalizarPedido(
+            @RequestParam Integer id,
+            @RequestParam Integer mesa) {
+
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow();
+        pedido.setMesa(mesa);
+        pedido.setStatus("ENVIADO_COZINHA");
+        pedidoRepository.save(pedido);
+
+        return "redirect:/cozinha/";
+    }
+
+    // 4) listar pedidos (opcional)
+    @GetMapping("/")
+    public String listarPedidos(Model model) {
+        model.addAttribute("pedidos", pedidoRepository.findAll());
+        return "paginas/pedidos";
+    }
+
+    @GetMapping("/edita")
+    public String editaPedido(@RequestParam("id") Integer id, Model model) {
+        Optional<Pedido> pedido = pr.findById(id);
+        if (pedido.isPresent()) {
+            model.addAttribute("pedido", pedido.get());
+            return "paginas/form-pedido";
+        }
+        return "redirect:/pedido/";
+    }
+
+    @GetMapping("/exclui")
+    public String excluiPedido(@RequestParam("id") Integer id) {
+        pr.deleteById(id);
+        return "redirect:/pedido/";
+    }
+
+    // --- SALVAR PEDIDO (ENVIA PARA A COZINHA) ---
+    @PostMapping("/salvar")
+    public String salvaPedido(@ModelAttribute("pedido") Pedido pedido) {
+
+        // Se o pedido for novo, muda status para "ENVIADO_COZINHA"
+        if (pedido.getId() == null) {
+            pedido.setStatus("ENVIADO_COZINHA");
+        }
+
+        pr.save(pedido);
+
+        return "redirect:/pedido/";
+    }
+
+    @PostMapping("/status")
+    public String atualizarStatus(@RequestParam("id") Integer id) {
+        Optional<Pedido> pedido = pr.findById(id);
+
+        if (pedido.isPresent()) {
+            Pedido p = pedido.get();
+            p.setStatus("PRONTO");
+            pr.save(p);
+        }
+
+        return "redirect:/cozinha/";
+    }
+}
