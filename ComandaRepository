@@ -1,0 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.info.crudlospolloss.repository;
+
+
+import com.info.crudlospolloss.model.Comanda;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ *
+ * @author info20242
+ */
+public interface ComandaRepository extends JpaRepository<Comanda, Integer>{
+    
+}
